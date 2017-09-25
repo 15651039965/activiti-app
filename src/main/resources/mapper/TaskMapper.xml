@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ReportMapper">
+    <resultMap type="WorkTask" id="taskResultMap">
+      <id column="taskid" property="taskid"/>
+		<result column="type" property="type"/>
+		<result column="style" property="style"/>
+		<result column="protid" property="protid"/>
+		<result column="sendtime" property="sendtime"/>
+		<result column="tasktype" property="tasktype"/>
+		<result column="content" property="content"/>
+		<result column="channel" property="channel"/>
+		<result column="overtime" property="overtime"/>
+		<result column="file" property="file"/>
+		<result column="price" property="price"/>
+		<result column="totalprice" property="totalprice"/>
+		<result column="contime" property="contime"/>
+		<result column="begintime" property="begintime"/>
+		<result column="endtime" property="endtime"/>
+		<result column="incid" property="incid"/>
+		<result column="epicture" property="epicture"/>		
+		<result column="processinstanceid" property="processinstanceid"/>
+    </resultMap>
+    <select id="findByProcessinstanceid" parameterType="entity.WorkTask" resultMap="taskResultMap">
+    select * from tb_task where processinstanceid = #{processinstanceid}
+    </select>
+  
+	<select id="get" resultType="entity.WorkTask" parameterType="int">
+		select * from tb_task where taskid=#{taskid}
+	</select>
+	<insert id="save" parameterType="entity.WorkTask"  useGeneratedKeys="true" keyProperty="taskid">
+	  insert into tb_task (tasktype,channel,postype,style,type,content,file)
+	  values (#{tasktype},#{channel},#{postype},#{style},#{type},#{content},#{file})
+	</insert>
+	<insert id="saveWorkTaskList" useGeneratedKeys="true" parameterType="java.util.List">  
+    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>
+     insert into tb_task (tasktype,channel,postype,style,type,content,file)   
+    <foreach collection="list" item="WorkTask" index="index" separator="," >   
+	  values (#{WorkTask.tasktype},#{WorkTask.channel},#{WorkTask.postype},#{WorkTask.style},#{WorkTask.type},#{WorkTask.content},#{WorkTask.file})
+    </foreach>  
+</insert> 
+    <update id="update" parameterType="entity.WorkTask">
+		update tb_task set processinstanceid =#{processinstanceid}
+		where taskid=#{taskid}
+	</update>
+	
+</mapper>

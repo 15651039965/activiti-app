@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserMapper">
+	<resultMap type="User" id="userMap">
+		<id column="userid" property="userid"/>
+		<result column="loginname" property="loginname"/>
+		<result column="password" property="password"/>
+		<result column="role" property="role"/>
+		<result column="name" property="name"/>
+		<result column="age" property="age"/>
+		<result column="sex" property="sex"/>
+		<result column="phone" property="phone"/>
+		<result column="telephone" property="telephone"/>
+		<result column="email" property="email"/>
+		<result column="np" property="np"/>
+		<result column="identity" property="identity"/>
+		<result column="education" property="education"/>
+		<result column="school" property="school"/>
+		<result column="idcard" property="idcard"/>
+		<result column="home" property="home"/>
+		<result column="place" property="place"/>
+		<result column="ecname" property="ecname"/>
+		<result column="ecphone" property="ecphone"/>
+		<result column="incid" property="incid"/>
+		<result column="jobs" property="jobs"/>
+		<result column="lastlogin" property="lastlogin"/>
+		<result column="weixinid" property="weixinid"/>
+		<result column="QQ" property="QQ"/>
+		<result column="count" property="count"/>
+		<result column="code" property="code"/>
+		<result column="status" property="status"/>
+		<result column="appkey" property="appkey"/>
+
+    </resultMap>
+  <resultMap type="java.lang.String" id="username">
+  <result column="loginname" property="loginname"/>
+  <result/>
+  </resultMap>
+    <select id="login" resultMap="userMap">
+    	select * from tb_user where loginname=#{loginname}
+    </select>
+      <select id="getUserByUser" resultMap="userMap">
+    	select * from tb_user where loginname=#{loginname}
+    </select>
+    <select id="getUserByLoginName" resultMap="userMap">
+    	select * from tb_user where loginname=#{loginname}
+    </select>
+   
+    <select id="findDeptLeaders" resultMap="username" parameterType="User">
+       select loginname from tb_user where role=4 
+       <if test="userid!=null and userid!=''">  
+                and userid=#{userid}  
+            </if>  
+    </select>
+    <select id="findOwner" resultMap="username" parameterType="User">
+       select loginname from tb_user where tb_user.role=2
+       <if test="userid!=null and userid!=''">  
+                and userid=#{userid}  
+            </if> 
+    </select>
+	 <select id="findServiceman" resultMap="username" parameterType="User">
+       select loginname from tb_user where role=6
+       <if test="userid!=null and userid!=''">  
+                and userid=#{userid}  
+            </if>
+    </select>
+ <select id="findSupervisor" resultMap="username" parameterType="User">
+       select loginname from tb_user where tb_user.role=3
+       <if test="userid!=null and userid!=''">  
+                and tb_user.userid=#{userid}  
+            </if> 
+    </select>
+
+</mapper>

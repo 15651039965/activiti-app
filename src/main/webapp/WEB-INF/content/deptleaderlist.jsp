@@ -97,7 +97,11 @@
 						                <label>附件图片</label>
 						                <input class="form-control" id="file" readonly="readonly">
 						              </div>
-						            
+						            <div class="form-group">
+						                <label>备注</label>
+						                <input class="form-control" id="message" name="message">
+						              </div>
+						              
 						              <div class="form-group">
 						                <label>施工人</label>
 						                <a href="adduser">添加人员</a>

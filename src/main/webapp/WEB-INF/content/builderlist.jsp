@@ -104,7 +104,7 @@
 						              <div class="form-group">
 						                <label>安排人</label>
 						                <input class="form-control" id="planname" readonly="readonly">
-						                <input class="form-control" id="plandate" readonly="read only">
+						                <input class="form-control" id="message" readonly="readonly">
 						              </div>
 						              <div class="form-group">
 						                <label>施工照片</label>
@@ -156,6 +156,7 @@
 	    	    		$("#file").val(data.file);
 	    	    		$("#publishname").val(data.publishname);
 	    	    		$("#publishdate").val(data.publishdate);
+	    	    		$("#message").val(data.message);
 	    	    		
 	    	    			    	  	
 	    	    		

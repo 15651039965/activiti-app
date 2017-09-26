@@ -20,6 +20,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,7 +81,7 @@ public class FastReportController {
 /**
  * 
  * @param null
- * @return 项目经理待定事项页面
+ * @return 项目经理安排施工页面
  */
 	@RequestMapping("/deptleaderlist")
 	public String mytask1(){
@@ -194,7 +195,7 @@ public String start_report(WorkTask worktask ,HttpSession session){
 
 
 /**
- * 使用组分配任务
+ * 使用多人分配任务
  * @param worktask
  * @param session
  * @return
@@ -211,7 +212,7 @@ public String start_report(String userIds,WorkTask worktask ,HttpSession session
 	variables.put("publishdate", new Date());
 	variables.put("tasktype", worktask.getTasktype());
 	variables.put("deptleaderuserId", userIds);
-
+    
 	System.out.println("##################################"+userIds);
 	ProcessInstance ins=reportservice.startWorkflow(worktask, username, variables);
 	System.out.println("流程id"+ins.getId()+"已启动");
@@ -483,19 +484,25 @@ User sysuser=userservice.getUserByUser(user);
 
 	@RequestMapping(value="/task/deptleaderplancomplete/{taskId}")
 	@ResponseBody
-	public String deptleaderplancomplete(String userIds,HttpSession session,@PathVariable("taskId") String taskId,HttpServletRequest req){
+	public String deptleaderplancomplete(String message,String userIds,HttpSession session,@PathVariable("taskId") String taskId,HttpServletRequest req){
 		String username=(String) session.getAttribute("username");
 		
 		 // 在任务完成时加流程变量
 		userIds="weixiu001,weixiutest";
-	
 		Map<String,Object> variables=new HashMap<String,Object>();
 		variables.put("planname",username );
 		variables.put("plandate",new Date());
 		variables.put("deptleaderacceptname", username);
 		variables.put("deptleaderacceptdate", new Date());
 		variables.put("builduserId", userIds);
+		
+		List<Comment> comments=reportservice.getProcessComments(taskId);
+		//添加备注
+		taskservice.addComment(taskId, null, message);
+		System.out.println("备注："+message);
+		//认领任务
 		taskservice.claim(taskId, username);
+		//完成任务
 		taskservice.complete(taskId, variables);
 		return JSON.toJSONString("success");
 	}
@@ -570,6 +577,7 @@ User sysuser=userservice.getUserByUser(user);
 		variables.put("buildname", username);
 		variables.put("builddate", new Date());
 		variables.put("deptleaderacceptuserId", userIds);
+		taskservice.getComment("message");
 		taskservice.claim(taskId, username);
 		taskservice.complete(taskId, variables);
 		return JSON.toJSONString("success");

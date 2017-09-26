@@ -122,7 +122,7 @@
             
     <script type="text/javascript">
     
-    $(document).ready(function(){
+    $(document).ready(function(){ 
     	$("#dept").hide();
 	    var grid=$("#grid-data").bootgrid({
 	    	navigation:2,
